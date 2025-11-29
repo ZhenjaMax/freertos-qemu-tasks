@@ -2,8 +2,9 @@
 
 #include <FreeRTOS.h>
 #include <task.h>
-#include <stdio.h>
 #include "riscv-virt.h"
+
+#include <stdio.h>
 
 #define TASK_PRIORITY    (tskIDLE_PRIORITY + 1)
 #define TASK_STACK_SIZE  (configMINIMAL_STACK_SIZE)
@@ -26,8 +27,6 @@ void vTaskFunction(void *pvParameters)
 
 int task(void)
 {
-    // Создание задачи
     xTaskCreate(vTaskFunction, "Task", TASK_STACK_SIZE, NULL, TASK_PRIORITY, NULL);
-
     return 0;
 }

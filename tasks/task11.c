@@ -19,7 +19,7 @@ void vTaskFunction(void *pvParameters)
         unsigned long ulMilliseconds = pdTICKS_TO_MS(xTimeNow);
 
         char buf[100];
-        sprintf(buf, "111 %lu ms | \tTask is running...", ulMilliseconds);
+        sprintf(buf, "%lu ms | \tTask is running...", ulMilliseconds);
         vSendString(buf);
 
         vTaskDelay(pdMS_TO_TICKS(DELAY_MS));
@@ -28,8 +28,6 @@ void vTaskFunction(void *pvParameters)
 
 int task(void)
 {
-    // Создание задачи
     xTaskCreate(vTaskFunction, "Task", TASK_STACK_SIZE, NULL, TASK_PRIORITY, NULL);
-
     return 0;
 }

@@ -1,15 +1,10 @@
 #include <FreeRTOS.h>
 #include <task.h>
 
-#include "trcRecorder.h"
-
 #include <stdio.h>
 #include <stdlib.h>
-#include <timers.h>
 
 #define mainVECTOR_MODE_DIRECT 1
-#define STOP_TIME_FRAC_MS 100
-#define TRACE_SAVE_DELAY_MS 4000
 
 extern void freertos_risc_v_trap_handler(void);
 extern void freertos_vector_table(void);
@@ -19,20 +14,10 @@ void vApplicationIdleHook(void);
 void vApplicationStackOverflowHook(TaskHandle_t pxTask, char * pcTaskName);
 void vApplicationTickHook(void);
 
-static void prvTraceSaveCallback(TimerHandle_t xTimer)
-{
-    (void) xTimer;
-    vTraceStop();
-    vTraceFlush("traces/trace_output.tztrace");
-}
-
 extern int task(void);
 
 int main( void )
 {
-    TimerHandle_t xTraceSaveTimer = NULL;
-    vTraceEnable(TRC_START);
-    
     /* trap handler initialization */
     #if (mainVECTOR_MODE_DIRECT == 1)
     {
@@ -45,21 +30,7 @@ int main( void )
     #endif
     
     task();
-
-    xTraceSaveTimer = xTimerCreate("TraceSave",
-        pdMS_TO_TICKS(TRACE_SAVE_DELAY_MS),
-        pdFALSE,
-        NULL,
-        prvTraceSaveCallback
-    );
-
-    if(xTraceSaveTimer != NULL)
-    {
-        xTimerStart(xTraceSaveTimer, 0);
-    }
-    
     vTaskStartScheduler();
-
     return 0;
 }
 
@@ -70,7 +41,6 @@ void vApplicationMallocFailedHook(void)
     taskDISABLE_INTERRUPTS();
     for( ; ; ){}
 }
-
 void vApplicationIdleHook(void) {}
 void vApplicationStackOverflowHook(TaskHandle_t pxTask, char * pcTaskName)
 {
@@ -79,7 +49,6 @@ void vApplicationStackOverflowHook(TaskHandle_t pxTask, char * pcTaskName)
     taskDISABLE_INTERRUPTS();
     for( ; ; ) {}
 }
-
 void vApplicationTickHook(void) {}
 void vAssertCalled(void)
 {

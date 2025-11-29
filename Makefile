@@ -50,13 +50,8 @@ ifeq ($(PICOLIBC), 1)
    LDFLAGS += --specs=picolibc.specs -DPICOLIBC_INTEGER_PRINTF_SCANF
 endif
 
-TRACERECORDER_SRCS = TraceRecorder/trcInternalBuffer.c \
-    TraceRecorder/trcKernelPort.c \
-    TraceRecorder/trcSnapshotRecorder.c
-
 SRCS = main.c \
     tasks/task$(TASK_NUMBER).c \
-	$(TRACERECORDER_SRCS) \
 	riscv-virt.c \
 	ns16550.c \
 	$(DEMO_SOURCE_DIR)/EventGroupsDemo.c \

@@ -1,9 +1,10 @@
 // 1.1. Создать поток исполнения – задачу (task).
 
 #include <FreeRTOS.h>
-#include <task.h>
-#include <stdio.h>
 #include "riscv-virt.h"
+#include <task.h>
+
+#include <stdio.h>
 
 #define TASK_PRIORITY    (tskIDLE_PRIORITY + 1)
 #define TASK_STACK_SIZE  (configMINIMAL_STACK_SIZE)

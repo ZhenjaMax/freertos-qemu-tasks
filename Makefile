@@ -17,7 +17,9 @@ CPPFLAGS = \
 	-I . -I ../Common/include \
 	-I $(RTOS_SOURCE_DIR)/include \
 	-I $(RTOS_SOURCE_DIR)/portable/GCC/RISC-V \
-	-I $(RTOS_SOURCE_DIR)/portable/GCC/RISC-V/chip_specific_extensions/RV32I_CLINT_no_extensions
+	-I $(RTOS_SOURCE_DIR)/portable/GCC/RISC-V/chip_specific_extensions/RV32I_CLINT_no_extensions \
+	-I TraceRecorder/include \
+	-I TraceRecorder/config
 CFLAGS  = -mabi=ilp32 -mcmodel=medany \
 	-Wall \
 	-fmessage-length=0 \
@@ -48,8 +50,13 @@ ifeq ($(PICOLIBC), 1)
    LDFLAGS += --specs=picolibc.specs -DPICOLIBC_INTEGER_PRINTF_SCANF
 endif
 
+TRACERECORDER_SRCS = TraceRecorder/trcInternalBuffer.c \
+    TraceRecorder/trcKernelPort.c \
+    TraceRecorder/trcSnapshotRecorder.c
+
 SRCS = main.c \
     tasks/task$(TASK_NUMBER).c \
+	$(TRACERECORDER_SRCS) \
 	riscv-virt.c \
 	ns16550.c \
 	$(DEMO_SOURCE_DIR)/EventGroupsDemo.c \

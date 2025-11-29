@@ -1,6 +1,8 @@
 #include <FreeRTOS.h>
 #include <task.h>
 
+#include "trcRecorder.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <timers.h>
